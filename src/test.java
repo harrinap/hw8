@@ -1,12 +1,12 @@
 
 public class test {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		System.out.println("this is a test");
-
+	public static void main (String args[]){
+		StudentController s = new StudentController(null);
+		SaveView s1 = new SaveView(null);
+		EnrollmentView e = new EnrollmentView(null);
+		CourseView c = new CourseView(null);
+		
 	}
-
+	
 }
