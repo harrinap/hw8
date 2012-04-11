@@ -12,40 +12,38 @@ public class StudentController {
 	private StudentView studentView;
 
 	public StudentController(Model model) {
-		this.m = m;
+		this.m = model;
 		studentView = new StudentView(this);
-		studentView.update("shit");
+		
 		studentView.addNewStudentListener(new NewStudentListener());
 		studentView.addTableSelectListener(new TableSelectionHandler());
+	}
+
+	
+	class TableSelectionHandler implements ListSelectionListener {
+
+		
+		public void valueChanged(ListSelectionEvent e) {		
+			
+			int rowIndex = studentView.getSelectedStudent();
+			m.setSelectedStudent(rowIndex);
+			//studentView.update(Integer.toString(m.getSelectedStudent()));	        
+		}
 	}
 	
 	class NewStudentListener implements ActionListener{
 
 		
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("new student button");
+			
+			studentView.update("update called from student button");
 			
 		}
 		
 	}
-	
-	class TableSelectionHandler implements ListSelectionListener {
-		
-		
-		
-		public void valueChanged(ListSelectionEvent e) {
-		//	System.out.println("testing table handler");
-			
-			ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-
-	        int rowIndex = e.getLastIndex();
-	        System.out.println(rowIndex);
-	        studentView.update(rowIndex);
-		}
-		
-	 
-
-	}
-
-
 }
+	
+
+
+
+

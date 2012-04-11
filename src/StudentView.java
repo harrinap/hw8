@@ -32,8 +32,12 @@ public class StudentView extends JFrame{
 	    setVisible(true);		
 	}
 	
-	public void addNewStudentListener(ActionListener newStudent){
-		panel.newStudent.addActionListener(newStudent);
+	public void addNewStudentListener(ActionListener a){
+		panel.newStudent.addActionListener(a);
+	}
+	
+	public int getSelectedStudent(){
+		return panel.studentTable.getSelectedStudent();
 	}
 	
 	public void addTableSelectListener(ListSelectionListener l){
@@ -42,13 +46,19 @@ public class StudentView extends JFrame{
 	
 	private class StudentPanel extends JPanel{
 		
+		
 		JButton newStudent;
 		JTextField name, gradyear;
 		MyTable studentTable;
 		
+
+		
+		
+		
 		
 
-		public StudentPanel() {
+		public StudentPanel() {		
+			
 			
 			
 					
@@ -70,7 +80,7 @@ public class StudentView extends JFrame{
 	}
 
 	public void update(String string) {
-		panel.name.setText("doing that");
+		panel.name.setText(string);
 		
 	}
 	

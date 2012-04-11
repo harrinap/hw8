@@ -11,12 +11,14 @@ public class MyTable extends JPanel {
 	
 	
 	private String[] headers;
-	ListSelectionModel listSelectionModel;
-	JTable table;
+	private ListSelectionModel listSelectionModel;
+	private JTable table;
+	
 	
 	
 	public MyTable(String[] headers){
 		this.headers = headers;
+		
 	
 	
 		 String[][] data = {{"un",     "uno",     "uno"     },
@@ -42,9 +44,13 @@ public class MyTable extends JPanel {
 
 	public void setTableSelectListener(ListSelectionListener l) {
 		listSelectionModel = table.getSelectionModel();
-		listSelectionModel.addListSelectionListener(new TableSelectionHandler());
+		listSelectionModel.addListSelectionListener(l);
 		table.setSelectionModel(listSelectionModel);
 		
+	}
+	
+	public int getSelectedStudent(){
+		return table.getSelectedRow();
 	}
 	
 
