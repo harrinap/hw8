@@ -12,16 +12,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableModel;
 
 
 
 public class StudentView extends JFrame{
 	private StudentPanel panel;
-	private StudentController studentController;
+	
 
 	public StudentView(StudentController studentController) {
 		
-		this.studentController = studentController;
+		
 		setTitle("Student Info");
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    setLocation(20, 50);
@@ -44,6 +45,11 @@ public class StudentView extends JFrame{
 		panel.studentTable.setTableSelectListener(l);
 	} 
 	
+	public void setTableModel(TableModel t){
+		panel.studentTable.setTableModel(t);
+		panel.studentTable.repaint();
+	}
+	
 	private class StudentPanel extends JPanel{
 		
 		
@@ -51,17 +57,8 @@ public class StudentView extends JFrame{
 		JTextField name, gradyear;
 		MyTable studentTable;
 		
-
-		
-		
-		
-		
-
 		public StudentPanel() {		
-			
-			
-			
-					
+				
 			newStudent = new JButton("Add Student");
 			name = new JTextField(10);
 			gradyear = new JTextField(10);
@@ -69,10 +66,7 @@ public class StudentView extends JFrame{
                     "Name",
                     "GradYear"};
 			studentTable = new MyTable(headers);
-			
-			
-			
-			
+	
 			setLayout(new FlowLayout());
 			add(studentTable); add(gradyear); 
 			add(name); add(newStudent);

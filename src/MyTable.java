@@ -5,6 +5,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableModel;
 
 
 public class MyTable extends JPanel {
@@ -44,9 +45,13 @@ public class MyTable extends JPanel {
 
 	public void setTableSelectListener(ListSelectionListener l) {
 		listSelectionModel = table.getSelectionModel();
-		listSelectionModel.addListSelectionListener(l);
-		table.setSelectionModel(listSelectionModel);
 		
+		listSelectionModel.addListSelectionListener(l);
+		table.setSelectionModel(listSelectionModel);	
+	}
+	
+	public void setTableModel(TableModel t){
+		this.table.setModel(t);
 	}
 	
 	public int getSelectedStudent(){

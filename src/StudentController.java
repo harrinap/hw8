@@ -1,12 +1,15 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 
-public class StudentController {
+public class StudentController implements ModelObserver {
 	
 	private Model m;
 	private StudentView studentView;
@@ -17,6 +20,7 @@ public class StudentController {
 		
 		studentView.addNewStudentListener(new NewStudentListener());
 		studentView.addTableSelectListener(new TableSelectionHandler());
+		m.addObserver(this);
 	}
 
 	
@@ -40,6 +44,12 @@ public class StudentController {
 			
 		}
 		
+	}
+	
+	
+	public void updateFromModel() {
+		TableModel t = m.getStudentTableModel();
+		studentView.setTableModel(t);
 	}
 }
 	

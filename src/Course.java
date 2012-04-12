@@ -1,13 +1,13 @@
 
 public class Course {
 	
-	private int code; 
-	private String title;
-	public Course(int code, String title){
+	private String code, title; 
+
+	public Course(String code, String title){
 		this.code = code;
 		this.title = title;
 	}
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 	public String getTitle() {

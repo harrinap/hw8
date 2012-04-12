@@ -3,13 +3,13 @@ import java.util.List;
 
 
 public class Student {
-	private int id, gradyear;
+	private int gradyear;
 	private String name;
 	private List<Course> courses;
 	
-	public Student(int id, int gradyear, String name){
+	public Student(String name, int gradyear){
 		courses = new ArrayList<Course>();
-		this. id = id; 
+		
 		this.gradyear = gradyear;
 		this.name = name;
 	}
@@ -25,11 +25,6 @@ public class Student {
 	public List<Course> getCourses() {
 		return courses;
 	}
-	
-	
-	public int getId() {
-		return id;
-	}
 
 	public int getGradyear() {
 		return gradyear;
@@ -38,5 +33,7 @@ public class Student {
 	public String getName() {
 		return name;
 	}
+	
+
 
 }
