@@ -14,13 +14,15 @@ public class StudentController implements ModelObserver {
 	private Model m;
 	private StudentView studentView;
 
-	public StudentController(Model model) {
+	public StudentController(Model model, StudentView studentView) {
+		
 		this.m = model;
-		studentView = new StudentView(this);
+		this.studentView = studentView;
 		
 		studentView.addNewStudentListener(new NewStudentListener());
-		studentView.addTableSelectListener(new TableSelectionHandler());
-		m.addObserver(this);
+		m.addStudentController(this);
+		updateFromModel();
+		studentView.setFirstRowFocused();
 	}
 
 	
@@ -30,17 +32,18 @@ public class StudentController implements ModelObserver {
 		public void valueChanged(ListSelectionEvent e) {		
 			
 			int rowIndex = studentView.getSelectedStudent();
-			m.setSelectedStudent(rowIndex);
-			//studentView.update(Integer.toString(m.getSelectedStudent()));	        
+			
+			m.setSelectedStudent(rowIndex);			
+		
+			studentView.update(Integer.toString(m.getSelectedStudent()));	        
 		}
 	}
 	
-	class NewStudentListener implements ActionListener{
-
-		
-		public void actionPerformed(ActionEvent e) {
-			
+	class NewStudentListener implements ActionListener{		
+		public void actionPerformed(ActionEvent e) {			
 			studentView.update("update called from student button");
+		    
+			m.addStudent(new Student(studentView.getName(), studentView.getGradYear()));
 			
 		}
 		
@@ -48,8 +51,13 @@ public class StudentController implements ModelObserver {
 	
 	
 	public void updateFromModel() {
-		TableModel t = m.getStudentTableModel();
-		studentView.setTableModel(t);
+		List<Student> l = m.getStudents();
+		System.out.println(l.size());
+		
+		studentView.updateTable(l);
+		studentView.addNewStudentListener(new NewStudentListener());
+		
+	
 	}
 }
 	

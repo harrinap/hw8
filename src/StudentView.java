@@ -2,6 +2,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -12,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 
@@ -20,9 +22,7 @@ public class StudentView extends JFrame{
 	private StudentPanel panel;
 	
 
-	public StudentView(StudentController studentController) {
-		
-		
+	public StudentView() {		
 		setTitle("Student Info");
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    setLocation(20, 50);
@@ -38,24 +38,28 @@ public class StudentView extends JFrame{
 	}
 	
 	public int getSelectedStudent(){
-		return panel.studentTable.getSelectedStudent();
+		return panel.studentTable.getSelectedRow();
 	}
 	
-	public void addTableSelectListener(ListSelectionListener l){
-		panel.studentTable.setTableSelectListener(l);
-	} 
-	
-	public void setTableModel(TableModel t){
-		panel.studentTable.setTableModel(t);
-		panel.studentTable.repaint();
+	public String getName(){
+		return panel.name.getText();
 	}
 	
-	private class StudentPanel extends JPanel{
-		
+	public int getGradYear(){
+		return Integer.parseInt(panel.gradyear.getText());
+	}
+	
+	public void setFirstRowFocused(){
+		panel.studentTable.setRowSelection(0,0);
+	}
+	
+	private class StudentPanel extends JPanel{	
 		
 		JButton newStudent;
 		JTextField name, gradyear;
 		MyTable studentTable;
+		
+		
 		
 		public StudentPanel() {		
 				
@@ -66,15 +70,36 @@ public class StudentView extends JFrame{
                     "Name",
                     "GradYear"};
 			studentTable = new MyTable(headers);
+			
 	
 			setLayout(new FlowLayout());
 			add(studentTable); add(gradyear); 
 			add(name); add(newStudent);
+			
 		}		
 	}
 
 	public void update(String string) {
 		panel.name.setText(string);
+		
+	}
+
+	public void updateTable(List<Student> l) {
+		MyTableModel t = new MyTableModel();
+		t.setRowCount(l.size());
+		panel.studentTable.setTableModel(t);
+		for(int i = 0; i<l.size();i++){
+			Student s = l.get(i);
+			panel.studentTable.getModel().setValueAt(i, i,0);
+			
+			String val  = s.getName();
+			panel.studentTable.getModel().setValueAt(val,i ,1);
+			val = Integer.toString(s.getGradyear());
+			panel.studentTable.getModel().setValueAt(val,i ,2);
+		
+		}
+		
+		
 		
 	}
 	
