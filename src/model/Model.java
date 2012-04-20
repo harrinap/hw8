@@ -19,6 +19,7 @@ public class Model {
 	private List<ModelObserver> modelObservers; // controllers
 	private List<Course> courses = new ArrayList<Course>();
 	private List<Student> students = new ArrayList<Student>();
+	private int student_id = 0;
 
 	public Model() {
 
@@ -58,16 +59,16 @@ public class Model {
 
 	private void initStudents() {
 
-		Student joe = new Student("Joe", 2012);
+		Student joe = new Student(student_id++, "Joe", 2012);
 		joe.addCourse(courses.get(courses.size() - 1));
 		joe.addCourse(courses.get(0));
 		students.add(joe);
 
-		Student steve = new Student("Steve", 2013);
+		Student steve = new Student(student_id++, "Steve", 2013);
 		steve.addCourse(courses.get(2));
 		students.add(steve);
 
-		Student kelsey = new Student("Kelsey", 2012);
+		Student kelsey = new Student(student_id++, "Kelsey", 2012);
 		kelsey.addCourse(courses.get(1));
 		students.add(kelsey);
 
@@ -90,7 +91,7 @@ public class Model {
 	}
 
 	public void addStudent(String name, int gradYear) {
-		students.add(new Student(name, gradYear));
+		students.add(new Student(student_id++, name, gradYear));
 		notifyObservers();
 	}
 

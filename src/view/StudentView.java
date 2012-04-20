@@ -90,9 +90,10 @@ public class StudentView extends JFrame {
 		panel.studentTable.setTableModel(t);
 		for (int i = 0; i < l.size(); i++) {
 			Student s = l.get(i);
-			panel.studentTable.getModel().setValueAt(i, i, 0);
+			String val = Integer.toString(s.getId());
+			panel.studentTable.getModel().setValueAt(val, i, 0);
 
-			String val = s.getName();
+			val = s.getName();
 			panel.studentTable.getModel().setValueAt(val, i, 1);
 			val = Integer.toString(s.getGradyear());
 			panel.studentTable.getModel().setValueAt(val, i, 2);
