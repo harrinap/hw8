@@ -21,7 +21,7 @@ public class CourseView extends JFrame {
 
 		setTitle("Course Info");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLocation(200, 200);
+		setLocation(20, 200);
 		setSize(20, 20);
 		panel = new CoursePanel(this);
 		setContentPane(panel);
@@ -63,6 +63,10 @@ public class CourseView extends JFrame {
 
 		}
 
+		public int getSelectedRow() {
+			return courseTable.getSelectedRow();
+		}
+
 	}
 
 	public void addNewCourseListener(ActionListener newCourseButtonListener) {
@@ -87,5 +91,9 @@ public class CourseView extends JFrame {
 	public void clearFields() {
 		panel.code.setText("");
 		panel.title.setText("");
+	}
+
+	public int getSelectedCourse() {
+		return panel.getSelectedRow();
 	}
 }

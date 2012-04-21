@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Student {
+public class Student implements Serializable {
 	private int id;
 	private int gradyear;
 	private String name;
@@ -23,8 +24,8 @@ public class Student {
 	public void addCourse(Course c) {
 		courses.add(c);
 	}
-	
-	public int getId(){
+
+	public int getId() {
 		return id;
 	}
 

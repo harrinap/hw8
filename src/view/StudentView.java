@@ -27,7 +27,7 @@ public class StudentView extends JFrame {
 		setTitle("Student Info");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocation(20, 50);
-		setSize(20, 20);
+		setSize(20, 80);
 		panel = new StudentPanel();
 		setContentPane(panel);
 		pack();
@@ -47,12 +47,15 @@ public class StudentView extends JFrame {
 	}
 
 	public int getGradYear() {
+		String s = panel.gradyear.getText();
+		if (s.isEmpty())
+			return 0;
 		return Integer.parseInt(panel.gradyear.getText());
 	}
 
-	public void setFirstRowFocused() {
-		if (panel.studentTable.getRowCount() > 0)
-			panel.studentTable.setRowSelection(0, 0);
+	public void setProperRowFocused(int i) {
+		// if (panel.studentTable.getRowCount() > 0)
+		panel.studentTable.setRowSelection(i, i);
 	}
 
 	private class StudentPanel extends JPanel {

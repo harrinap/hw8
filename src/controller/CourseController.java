@@ -21,7 +21,9 @@ public class CourseController implements ModelObserver {
 	}
 
 	public void updateFromModel() {
+		if(model.getCourses() != null){
 		courseView.updateTable(model.getCourses());
+		}
 
 	}
 
@@ -30,10 +32,16 @@ public class CourseController implements ModelObserver {
 		public void actionPerformed(ActionEvent e) {
 			String code = courseView.codeToAdd();
 			String title = courseView.titleToAdd();
-			model.addCourse(code, title);
-			courseView.clearFields();
+			if (!code.isEmpty() && !title.isEmpty()) {
+				model.addCourse(code, title);
+				courseView.clearFields();
+			}
 		}
 
+	}
+
+	public int getSelectedCourse() {
+		return courseView.getSelectedCourse();
 	}
 
 }

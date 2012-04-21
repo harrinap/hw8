@@ -2,58 +2,38 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
-
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
-import controller.EnrollmentController;
-import controller.StudentController;
 
 public class Model {
 
-	private int selectedStudent; // index for which student is selected in
-									// StudentView
-	private int selectedCourse;// index for which course is selected in
-								// CourseView
-	private List<ModelObserver> modelObservers; // controllers
+	private List<ModelObserver> modelObservers = new ArrayList<ModelObserver>();
 	private List<Course> courses = new ArrayList<Course>();
 	private List<Student> students = new ArrayList<Student>();
 	private int student_id = 0;
-
-	public Model() {
-
-		modelObservers = new ArrayList<ModelObserver>();
-		initCourses();
-		initStudents();
-		selectedCourse = 0;
-		selectedStudent = 0;
-
-	}
+	private int selectedStudent = -1;
 
 	public int getSelectedStudent() {
 		return selectedStudent;
-
-	}
-
-	public void addEnrollmentController(EnrollmentController e) {
 	}
 
 	public void setSelectedStudent(int selectedStudent) {
-		if (this.selectedStudent != selectedStudent) {
-			this.selectedStudent = selectedStudent;
-
-			notifyObservers();
-		}
-	}
-
-	public void setSelectedCourse(int selectedCourse) {
-		this.selectedCourse = selectedCourse;
+		this.selectedStudent = selectedStudent;
 		notifyObservers();
 	}
 
-	public void dropSelectedCourse() {
-		students.get(selectedStudent).dropCourse(selectedCourse);
+	public SaveObject getSaveObject() {
+		return new SaveObject(courses, students, student_id, selectedStudent);
+	}
+
+	public Model(SaveObject saved) {
+		this.courses = saved.getCourses();
+		this.selectedStudent = saved.getSelectedStudent();
+		this.student_id = saved.getStudent_id();
+		this.students = saved.getStudents();
+	}
+
+	public Model() {
+		// initCourses();
+		// initStudents();
 
 	}
 
@@ -90,7 +70,45 @@ public class Model {
 		this.modelObservers.add(m);
 	}
 
+	public void addCourse(String code, String title) {
+		String properCode = code.toLowerCase();
+		// to prevent duplicates
+		for (Course c : courses) {
+			if (c.getCode().equals(properCode))
+				return;
+		}
+
+		Course c = new Course(properCode, title);
+		courses.add(c);
+		notifyObservers();
+
+	}
+
+	public void addCourseToStudent(int courseIndex, int studentIndex) {
+
+		// to prevent duplicates
+		List<Course> currentCourses = getStudent(studentIndex).getCourses();
+		String indexToAdd = courses.get(courseIndex).getCode();
+
+		for (Course c : currentCourses) {
+			if (indexToAdd.equals(c.getCode()))
+				return;
+		}
+
+		students.get(studentIndex).addCourse(courses.get(courseIndex));
+		notifyObservers();
+	}
+
 	public void addStudent(String name, int gradYear) {
+		// to prevent duplicate students
+		for (Student s : students)
+			if (s.getName().toLowerCase().equals(name.toLowerCase())
+					&& gradYear == s.getGradyear())
+				return;
+
+		if (selectedStudent == -1)
+			selectedStudent = 0;
+
 		students.add(new Student(student_id++, name, gradYear));
 		notifyObservers();
 	}
@@ -104,21 +122,15 @@ public class Model {
 	}
 
 	public void dropCourse(int selectedCourse, int selectedStudent) {
-		students.get(selectedStudent).dropCourse(selectedCourse);
-		notifyObservers();
+		if (students.get(selectedStudent).getCourses().size() > 0) {
+			students.get(selectedStudent).dropCourse(selectedCourse);
+			notifyObservers();
+		}
 
 	}
 
-	public void addCourse(String code, String title) {
-		Course c = new Course(code, title);
-		courses.add(c);
-		notifyObservers();
-
-	}
-
-	public void selectStudent(int selectedStudent2) {
-		// TODO Auto-generated method stub
-
+	public Student getStudent(int index) {
+		return students.get(index);
 	}
 
 }

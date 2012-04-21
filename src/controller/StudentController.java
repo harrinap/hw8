@@ -29,36 +29,29 @@ public class StudentController implements ModelObserver {
 		studentView.addNewStudentListener(new NewStudentListener());
 		model.addObserver(this);
 		updateFromModel();
-		studentView.setFirstRowFocused();
-	}
 
-	class TableSelectionHandler implements ListSelectionListener {
-
-		public void valueChanged(ListSelectionEvent e) {
-
-			int rowIndex = studentView.getSelectedStudent();
-
-			model.setSelectedStudent(rowIndex);
-
-			studentView.update(Integer.toString(model.getSelectedStudent()));
-		}
 	}
 
 	class NewStudentListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-
-			model.addStudent(studentView.getName(), studentView.getGradYear());
-
-			studentView.clearFields();
+			String name = studentView.getName();
+			Integer year = studentView.getGradYear();
+			if (!name.isEmpty() && year > 2000) {
+				model.addStudent(name, year);
+				studentView.clearFields();
+			}
 		}
 	}
 
 	public void updateFromModel() {
+		if(model.getSelectedStudent() == -1)//no student is selected yet
+			return;
 		List<Student> l = model.getStudents();
 		System.out.println(l.size());
 
 		studentView.updateTable(l);
 		// studentView.addNewStudentListener(new NewStudentListener());
+		studentView.setProperRowFocused(model.getSelectedStudent());
 
 	}
 

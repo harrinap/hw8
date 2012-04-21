@@ -19,7 +19,7 @@ public class EnrollmentView extends JFrame {
 
 		setTitle("Enrollment Info");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLocation(200, 200);
+		setLocation(20, 350);
 		setSize(20, 200);
 		panel = new EnrollmentPanel(this);
 		setContentPane(panel);
@@ -71,6 +71,11 @@ public class EnrollmentView extends JFrame {
 			panel.enrollmentTable.getModel().setValueAt(c.getCode(), i, 0);
 			panel.enrollmentTable.getModel().setValueAt(c.getTitle(), i, 1);
 		}
+
+	}
+
+	public void addSelectButtonListener(ActionListener selectListener) {
+		panel.select.addActionListener(selectListener);
 
 	}
 

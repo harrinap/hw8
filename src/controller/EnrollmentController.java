@@ -4,23 +4,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import view.EnrollmentView;
 
 import model.Course;
 import model.Model;
 import model.ModelObserver;
+import model.Student;
 
 public class EnrollmentController implements ModelObserver {
 
 	Model model;
 	EnrollmentView enrollmentView;
 	StudentController studentController;
+	CourseController courseController;
 
-	public EnrollmentController(Model m, EnrollmentView e, StudentController s) {
+	public EnrollmentController(Model m, EnrollmentView e, StudentController s,
+			CourseController cc) {
 		studentController = s;
 		enrollmentView = e;
+		courseController = cc;
 		model = m;
-		m.addEnrollmentController(this);
+		m.addObserver(this);
 
 		enrollmentView.addDropButtonListenter(new DropListener());
 		enrollmentView.addAddButtonListener(new AddListener());
@@ -31,26 +38,49 @@ public class EnrollmentController implements ModelObserver {
 
 	@Override
 	public void updateFromModel() {
-		List<Course> l = model.getStudents().get(model.getSelectedStudent())
-				.getCourses();
+		if(model.getSelectedStudent()==-1)//no student is selected yet
+			return;
+		Student s = model.getStudent(model.getSelectedStudent());
+		List<Course> l = s.getCourses();
 		enrollmentView.updateTable(l);
-
-		enrollmentView.addDropButtonListenter(new DropListener());
+		enrollmentView.setTitle("Enrollments for " + s.getName());
+		// enrollmentView.addDropButtonListenter(new DropListener());
 
 	}
 
 	class DropListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			model.dropCourse(enrollmentView.getSelectedCourse(),
-					studentController.getSelectedStudent());
+
+			int selectedCourse = enrollmentView.getSelectedCourse();
+
+			if (selectedCourse < 0) {
+
+				JOptionPane
+						.showMessageDialog(new JFrame(),
+								"Please ensure both student and course to add are selected");
+			} else {
+
+				model.dropCourse(enrollmentView.getSelectedCourse(),
+						studentController.getSelectedStudent());
+			}
 		}
 
 	}
 
 	class AddListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			model.addCourse(enrollmentView.getSelectedCourse(),
-					studentController.getSelectedStudent());
+			int selectedCourse = courseController.getSelectedCourse();
+
+			if (selectedCourse < 0) {
+
+				JOptionPane
+						.showMessageDialog(new JFrame(),
+								"Please ensure both student and course to add are selected");
+			} else {
+
+				model.addCourseToStudent(courseController.getSelectedCourse(),
+						studentController.getSelectedStudent());
+			}
 		}
 
 	}
@@ -59,8 +89,7 @@ public class EnrollmentController implements ModelObserver {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			model.selectStudent(model.getSelectedStudent());
-
+			model.setSelectedStudent(studentController.getSelectedStudent());
 		}
 
 	}
