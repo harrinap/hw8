@@ -37,33 +37,9 @@ public class Model {
 
 	}
 
-	private void initStudents() {
-
-		Student joe = new Student(student_id++, "Joe", 2012);
-		joe.addCourse(courses.get(courses.size() - 1));
-		joe.addCourse(courses.get(0));
-		students.add(joe);
-
-		Student steve = new Student(student_id++, "Steve", 2013);
-		steve.addCourse(courses.get(2));
-		students.add(steve);
-
-		Student kelsey = new Student(student_id++, "Kelsey", 2012);
-		kelsey.addCourse(courses.get(1));
-		students.add(kelsey);
-
-	}
-
 	private void notifyObservers() {
 		for (ModelObserver ob : modelObservers)
 			ob.updateFromModel();
-	}
-
-	private void initCourses() {
-		courses.add(new Course("CS101", "intro to CS"));
-		courses.add(new Course("CS255", "hacking to do evil"));
-		courses.add(new Course("SC002", "anthropology"));
-
 	}
 
 	public void addObserver(ModelObserver m) {
